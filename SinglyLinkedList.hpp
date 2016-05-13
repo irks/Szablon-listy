@@ -71,7 +71,7 @@ void SinglyLinkedList< T >::pop_front() {
 	--count;
 }
 
-template< class T >
+template < class T >
 void SinglyLinkedList< T >::push_back( T d ) {
 	Node* newTail = newNode( d, NULL );
 
@@ -81,4 +81,42 @@ void SinglyLinkedList< T >::push_back( T d ) {
 		tail-> next = newTail;
 	tail = newTail;
 	++count;
+}
+
+template < class T >
+void SinglyLinkedList< T >::pop_back() {
+
+	assert( tail != NULL );
+
+	Node* oldTail = tail;
+
+	if( this-> size() == 1 ) {
+		head = NULL;
+		tail = NULL;
+	}
+	else {
+		Node* current = head;
+		while( current-> next != tail)
+			current = current-> next;
+		current-> next = NULL;
+		tail = current;
+	}
+
+	delete oldTail;
+	--count;
+}
+
+template < class T >
+SinglyLinkedList< T >::~SinglyLinkedList() {
+	while( ! this-> empty )
+		this-> pop_front();
+}
+
+template < class T >
+SinglyLinkedList< T >::SinglyLinkedList( const SinglyLinkedList< T >& source ) : count( 0 ), head( NULL ), tail( NULL ) {
+	Node* current = source.head;
+	while( current != NULL ) {
+		this-> push_back( current-> data )
+		current = current-> next;
+	}
 }
