@@ -1,55 +1,8 @@
 #include <cassert>
-
-/*void myAssert( int a, const string& msg )
-{
-    if( !a )
-    {
-        cerr << msg << " ... Press 'Enter' to exit ... " << flush;
-        cin.clear(); cin.sync(); cin.get(); exit(1);
-    }
-}*/
-
-template < class T > class Iter;
-template < class T > class SinglyLinkedList;
-template < class T > class Node;
-/*
-template < class T >
-class Iter {
-
-public:
-    Iter() : current( NULL ) {}
-
-    // return T value at Node of this Iter  ...
-    T operator * () const {
-        assert( current != NULL);
-        return current-> data;
-    }
-    T& operator * () {
-        assert( current != NULL);
-        return current-> data;
-    }
-    // pre ++ ...
-    Iter& operator ++ () {
-        assert( current != NULL);
-        current = current-> next;
-        return *this;
-    }
-    // post ++ ...
-    Iter& operator ++ ( int anIntDummyHereToIndicatePostPP ) {
-        assert( current != NULL);
-        current = current-> next;
-        return *this;
-    }
-    
-    bool operator == ( Iter< T > it ) const { return current == it.current; }
-    bool operator != ( Iter< T > it ) const { return current != it.current; }
-
-private:
-    Node< T >* current;
-    friend class List< T >;
-}; */
-
-
+#include "Node.hpp"
+//template < class T > class Iter;
+//template < class T > class SinglyLinkedList;
+//template < class T > class Node;
 
 template < class T >
 
@@ -92,29 +45,20 @@ public:
 	int size() { return count; }
 	bool empty() { return count == 0; };
 	void clear();
-
-	class iterator {
-		friend class SinglyLinkedList< T >;
-	public:
-		iterator& operator ++ () { ptr = ptr-> next; return *this; }
-		iterator& operator ++ ( int dummy ) { ptr = ptr-> next; return *this; }
-		bool operator != ( const iterator& it2 ) const { return ptr != it2.ptr; }
-		T operator * () const { return ptr-> data; }
-		T& operator * () { return ptr-> data; }
-	private:
-		Node* ptr;
-	};
-	/*T& front() {
+	typename SinglyLinkedList< T >::iterator& SinglyLinkedList< T >::begin();
+	T& front() {
 		assert ( head != NULL );
 		return head-> data;
 	}
 	T& back() {
 		assert ( tail != NULL );
 		return tail-> data;
-	}*/
-	iterator begin() /*{ return head }*/;
+	}
+
+
+	//Iterator begin() { return It/*{ return head }*/;
 	//const_iterator cbegin() const { return head; };
-	iterator end() /*{ return tail }*/;
+	//iterator end() /*{ return tail }*/;
 	//const_iterator cend() const { return tail; };
 	//reverse_iterator rbegin() { return reverse_iterator( end() ); }
 	//const_reverse_iterator crbegin() const { return const_reverse_iterator( end() ); }
@@ -124,6 +68,13 @@ public:
 	//size_type max_size() const { return size_type() / sizeof( T ); } 
 	//bool empty() const { return begin() == end() }
 };
+
+template < class T >
+typename SinglyLinkedList< T >::iterator& SinglyLinkedList< T >::iterator::begin() {
+	iterator it;
+	it.ptr = head;
+	return it;
+}
 
 template < class T >
 void SinglyLinkedList< T >::push_front( T d ) {
@@ -157,7 +108,7 @@ void SinglyLinkedList< T >::pop_front() {
 
 template < class T >
 void SinglyLinkedList< T >::push_back( T d ) {
-	Node* newTail = (Node*)( d, NULL );
+	Node* newTail = new Node( d, NULL );
 
 	if ( this-> empty() ) 
 		head = newTail;
@@ -217,24 +168,6 @@ SinglyLinkedList< T >& SinglyLinkedList< T >::operator = ( const SinglyLinkedLis
 
 template < class T >
 void SinglyLinkedList< T >::clear() {
-	for( Node* current = head; head != NULL; current = head ) {
-		head = head-> next;
-		delete current;
-	}
-	head = NULL;
-	tail = NULL;
-}
-
-template < class T >
-typename SinglyLinkedList< T >::iterator SinglyLinkedList< T >::begin() {
-	typename SinglyLinkedList< T >::iterator it;
-	it.ptr = head;
-	return it;
-}
-
-template < class T >
-typename SinglyLinkedList< T >::iterator SinglyLinkedList< T >::end() {
-	typename SinglyLinkedList< T >::iterator it;
-	it.ptr = tail;
-	return it;
+	for( ; head != NULL; ) 
+		pop_front();
 }
