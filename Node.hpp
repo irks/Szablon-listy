@@ -5,11 +5,14 @@ class Node {
 		Node* next;
 		
 	public:
-		Node( T d, Node* n = NULL ) : data( d ), next( n ) {}
-		Node* nextN() {
+		Node( T d, Node< T >* n = nullptr ) : data( d ), next( n ) {}
+		Node< T >* getNext() {
 			return next;
 		}	
-		T& dataN() {
+		T& getData() {
 			return data;
+		}
+		void setNextNode( Node< T >* n = nullptr ) {
+			next = n;
 		}
 };
