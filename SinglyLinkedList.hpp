@@ -1,52 +1,26 @@
-#include <cassert>
-//#include "Node.hpp"
 #include "Iterator.hpp"
-
-
 template < class T >
 class SinglyLinkedList {
 private:
-	
 	Node< T >* head;
 	Node< T >* tail;
-	int count;
-	
+	int count;	
 public:
 	SinglyLinkedList() : head( nullptr ), tail( nullptr ), count( 0 ) {}
 	SinglyLinkedList< T >& operator = ( const SinglyLinkedList< T >& );
 	SinglyLinkedList( const SinglyLinkedList< T >& );
 	~SinglyLinkedList();
-	
-	
-	
 	void push_front( T& );
 	void pop_front();
 	void push_back( T& );
 	void pop_back();
-	int size() { return count; }
-	bool empty() const { return count == 0; };
+	int size() const;
+	bool empty() const;
 	void clear();
-	
-	Node< T >& front() {
-		assert ( head != nullptr );
-		return head;
-	}
-	Node< T >& back() {
-		assert ( tail != nullptr );
-		return tail;
-	}
-
-	 iterator< T > begin();
-	 iterator< T > end();
-	//const_iterator cbegin() const { return head; };
-	//const_iterator cend() const { return tail; };
-	//reverse_iterator rbegin() { return reverse_iterator( end() ); }
-	//const_reverse_iterator crbegin() const { return const_reverse_iterator( end() ); }
-	//reverse_iterator rend() { return reverse_iterator( begin() ); }
-	//const_reverse_iterator crend() const { return const_reverse_iterator( begin() ); }
-	//size_type size() const { return size_type( end() - begin() ); }
-	//size_type max_size() const { return size_type() / sizeof( T ); } 
-	//bool empty() const { return begin() == end() }
+	Node< T >& front() const; 
+	Node< T >& back() const;
+	iterator< T > begin();
+	iterator< T > end();
 };
 
 template < class T >
@@ -58,14 +32,6 @@ template < class T >
  iterator< T > SinglyLinkedList< T >::end() {
 	return iterator< T >( tail ); 
 }
-
-
-/*template < class T >
-typename SinglyLinkedList< T >::iterator& SinglyLinkedList< T >::iterator::begin() {
-	iterator it;
-	it.ptr = head;
-	return it;
-}*/
 
 template < class T >
 void SinglyLinkedList< T >::push_front( T& d ) {
@@ -83,7 +49,6 @@ void SinglyLinkedList< T >::push_front( T& d ) {
 template < class T >
 void SinglyLinkedList< T >::pop_front() {
 
-	assert( head != nullptr );
 
 	Node< T >* oldHead = head;
 
@@ -112,7 +77,6 @@ void SinglyLinkedList< T >::push_back( T& d ) {
 template < class T >
 void SinglyLinkedList< T >::pop_back() {
 
-	assert( tail != nullptr );
 
 	Node< T >* oldTail = tail;
 
@@ -162,3 +126,26 @@ void SinglyLinkedList< T >::clear() {
 	for( ; head != nullptr; ) 
 		pop_front();
 }
+
+template < class T > 
+bool SinglyLinkedList< T >::empty() const {
+	return count == 0; 
+}
+
+template < class T >
+int SinglyLinkedList< T >::size() const {
+	return count;
+}
+
+template < class T >
+Node< T >& SinglyLinkedList< T >::front() const {
+	return head;
+}
+
+template < class T >
+Node< T >& SinglyLinkedList< T >::back() const {
+	return tail;
+}
+
+//erase
+//insert
