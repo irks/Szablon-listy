@@ -1,43 +1,56 @@
 #include "Node.hpp"
 
 template < class T >
-class iterator {
+class Iterator {
 		
 	public:
-		iterator< T >( Node< T >* pointer = nullptr ) : ptr( pointer ) {}
-		iterator< T >& operator ++ ();
-		iterator< T >& operator ++ ( T );
-		const bool operator != ( const iterator& );
-		const bool operator == ( const iterator& );
-		T& operator * ();
+		Iterator< T >( Node< T >* pointer = nullptr ) : ptr( pointer ) {}
+		//Iterator< T >( Iterator< T >& );
+		Iterator< T >& operator ++ ();
+		Iterator< T >& operator ++ ( T );
+		void operator = ( const Iterator& );
+		const bool operator != ( const Iterator& );
+		const bool operator == ( Iterator& );
+		T& operator * () const;
+		T& operator -> () const;
 		
 	private:
 		Node< T >* ptr;
 };
 
 template < class T >
-iterator< T >& iterator< T >::operator ++() {
+void Iterator< T >::operator = ( const Iterator< T >& source ) {
+	ptr = source.ptr;
+}
+
+template < class T >
+Iterator< T >& Iterator< T >::operator ++() {
 	ptr = ptr-> getNext(); 
 	return *this;
 }
 template < class T >
-iterator< T >& iterator< T >::operator ++ ( T ) {
+Iterator< T >& Iterator< T >::operator ++ ( T ) {
 	ptr = ptr-> getNext(); 
 	return *this;
 }
 
 template < class T >
-const bool iterator< T >::operator != ( const iterator& it2 ) {
+const bool Iterator< T >::operator != ( const Iterator& it2 ) {
 	return ptr != it2.ptr;
 }
 
 template < class T >
-const bool iterator< T >::operator == ( const iterator& it2 ) {
+const bool Iterator< T >::operator == ( Iterator& it2 ) {
 	return ptr == it2.ptr;
 }
 
 template < class T >
-T& iterator< T >::operator * () {
+T& Iterator< T >::operator * () const {
+	return ptr-> getData();
+}
+
+template < class T >
+T& Iterator< T >::operator -> () const {
 	return ptr-> getData();
 }
 

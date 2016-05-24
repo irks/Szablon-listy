@@ -1,4 +1,6 @@
 #include "Iterator.hpp"
+#include <iostream>
+
 template < class T >
 class SinglyLinkedList {
 private:
@@ -14,23 +16,32 @@ public:
 	void pop_front();
 	void push_back( T& );
 	void pop_back();
+	void insert_after( Iterator< T >, const T & );
+	void erase_after( Iterator< T > position );
 	int size() const;
 	bool empty() const;
 	void clear();
 	Node< T >& front() const; 
 	Node< T >& back() const;
-	iterator< T > begin();
-	iterator< T > end();
+	Iterator< T > begin();
+	Iterator< T > end();
+	void printList();
 };
 
 template < class T >
- iterator< T > SinglyLinkedList< T >::begin() {
-	return iterator< T >( head ); 
+SinglyLinkedList< T >::~SinglyLinkedList() {
+	clear();
+	delete this;
 }
 
 template < class T >
- iterator< T > SinglyLinkedList< T >::end() {
-	return iterator< T >( tail ); 
+Iterator< T > SinglyLinkedList< T >::begin() {
+	return Iterator< T >( head ); 
+}
+
+template < class T >
+Iterator< T > SinglyLinkedList< T >::end() {
+	return Iterator< T >( tail ); 
 }
 
 template < class T >
@@ -97,12 +108,6 @@ void SinglyLinkedList< T >::pop_back() {
 }
 
 template < class T >
-SinglyLinkedList< T >::~SinglyLinkedList() {
-	while( ! this-> empty() )
-		this-> pop_front();
-}
-
-template < class T >
 SinglyLinkedList< T >::SinglyLinkedList( const SinglyLinkedList< T >& source ) : count( 0 ), head( NULL ), tail( NULL ) {
 	Node< T >* current = source.head;
 	while( current != nullptr ) {
@@ -139,13 +144,41 @@ int SinglyLinkedList< T >::size() const {
 
 template < class T >
 Node< T >& SinglyLinkedList< T >::front() const {
-	return head;
+	return *head;
 }
 
 template < class T >
 Node< T >& SinglyLinkedList< T >::back() const {
-	return tail;
+	return *tail;
 }
 
-//erase
-//insert
+template < class T >
+void SinglyLinkedList< T >::insert_after( Iterator< T > position, const T & value ) {
+	Node< T >* newNode = new Node< T >( value, position.ptr-> getNext );
+	if ( position == end() )
+		tail = newNode;
+	position.ptr-> setNextNode( newNode );
+}
+
+template < class T >
+void SinglyLinkedList< T >::erase_after( Iterator< T > position ) {
+	if ( position == end() )
+		return;
+	Node< T >* toDelete = ++position.ptr;
+	Node< T >* nextOfDeleted = toDelete-> getNext();
+	position.ptr-> setNextNode( nextOfDeleted );
+	if( toDelete == back() )
+		tail = position.ptr;
+	delete toDelete;
+}
+
+template < class T >
+void SinglyLinkedList< T >::printList() {
+	Iterator< T > it; 
+	it = begin();
+	for( ; it != end(); ++it ) {
+		std::cout << *it << std::endl;
+	}
+	std::cout << *it << std::endl;
+	return;
+}
