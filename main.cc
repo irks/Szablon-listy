@@ -1,12 +1,41 @@
 #include <iostream>
 #include "SList.hpp"
+
+#include <ctime>
+#include <chrono>
+#include <list>
 using namespace std;
 int main() {
 	bool menu = true;
 	int choice;
 	int element;
 	SList< int > list;
+    SList< int > list2;
+    
     Iterator< int > result;
+    std::list< int > list_test;
+
+    /*std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i)
+            list.push_back(i);
+    end = std::chrono::system_clock::now();
+ std::chrono::duration<double> elapsed_seconds = end-start;
+    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+ 
+    std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
+
+
+    start = std::chrono::system_clock::now();
+    for(int i = 0; i < 1000000; ++i)
+            list_test.push_back(i);
+    end = std::chrono::system_clock::now();
+ 
+    elapsed_seconds = end-start;
+    end_time = std::chrono::system_clock::to_time_t(end);
+ 
+    std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";*/
+
 
 	while( menu ) {
 
@@ -23,12 +52,15 @@ int main() {
             cout << "8. Liczba wszystkich elementow" << endl;
             cout << "9. Wyszukaj" << endl;
             cout << "10. seed " << endl;
+            cout << "11. test operatora = " << endl;
+            cout << "12. dodaj na pierwsze wolne " << endl;
+            cout << "13. erase o danej wartosci" << endl;
             cout << "===================================================================" << endl;
 
             cin >> choice;
 
             try {
-
+                
                 switch( choice ) {
                 	case 1:
         //                 cout << "===================================================================" << endl;
@@ -120,9 +152,26 @@ int main() {
                         for(int i = 0; i < 26; ++i)
                                 list.push_back(i);
                         break;
+                    case 11:
+                        for(int i = -21; i < 55; ++i)
+                                list2.push_back(i);
+                        list = list2;
+                        break;
+                    case 12:
+                        cout << "Podaj wartosc" << endl;
+                        cin >> element;
+                        list.pushInFirstEmpty( element );
+                        break;
+                    case 13:
+                        cout << "Podaj wartosc" << endl;
+                        cin >> element;
+                        result = list.search( element );
+                        list.erase( result );
+                        break;
                 	default:
                 		cout << "Musisz podac numer odpowiadajacy danemu dzialaniu!" << endl;
                         break;
+
                 } //switch
             } //try
             catch( EmptyList &e ) {

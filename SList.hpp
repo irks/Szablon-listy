@@ -10,15 +10,15 @@ private:
 	int NodesCount;
 public:
 	SList() : head( nullptr ), tail( nullptr ), NodesCount( 0 ) {}
-// 	SList< T >& operator = ( const SList< T >& );
-// 	SList( const SList< T >& );
+	SList< T >& operator = ( SList< T >& );
+	SList( const SList< T >& );
 	~SList() noexcept;
 // 	void push_front( T& );
 // 	void pop_front();
 	void push_back( T& );
 	void pop_back();
 // 	void insert_after( Iterator< T >, const T & );
-// 	void erase_after( Iterator< T > position );
+	void erase( Iterator< T > );
 	int sizeElementsInArrays() const;
 	int size() const;
 	bool empty() const;
@@ -29,6 +29,7 @@ public:
 	Iterator< T > begin();
 	Iterator< T > end();
 	void printList();
+	void pushInFirstEmpty( T& );
 };
 
 template < class T >
@@ -56,37 +57,6 @@ int SList< T >::sizeElementsInArrays() const {
 	}
 	return elementsCount;
 }
-
-// template < class T >
-// void SList< T >::push_front( T& d ) {
-// 	Node< T >* newHead = new Node< T >( d, head );
-
-// 	if ( this-> empty() ) {
-// 		head = newHead;
-// 		tail = newHead;
-// 	}
-// 	else
-// 		head = newHead;
-// 	++count;
-// }
-
-// template < class T >
-// void SList< T >::pop_front() {
-
-//     if( empty() )
-//         throw EmptyList();
-
-// 	Node< T >* oldHead = head;
-
-// 	if ( size() == 1 ) {
-// 		head = nullptr;
-// 		tail = nullptr;
-// 	}
-// 	else
-// 		head = head-> getNext();
-// 	delete oldHead;
-// 	--count;
-// }
 
 template < class T >
 void SList< T >::push_back( T& d ) {
@@ -121,7 +91,6 @@ void SList< T >::pop_back() {
 		tail = nullptr;
 		--NodesCount;
 	}
-
 	else if ( tail-> deleteElement( *end() ) == 0 ) {
 		Node< T >* current = head;
 		Node< T >* previous = nullptr;
@@ -134,39 +103,28 @@ void SList< T >::pop_back() {
 		tail-> setNextNode( nullptr );
 		--NodesCount;
 	}
-// 	Node< T >* oldTail = tail;
-
-	
-// 	else {
-// 		Node< T >* current = head;
-// 		while( current-> getNext() != tail)
-// 			current = current-> getNext();
-// 		current->setNextNode( nullptr );
-// 		tail = current;
-// 	}
-
-// 	delete oldTail;
-// 	--count;
 }
 
-// template < class T >
-// SList< T >::SList( const SList< T >& source ) : count( 0 ), head( NULL ), tail( NULL ) {
-// 	Node< T >* current = source.head;
-// 	while( current != nullptr ) {
-// 		this-> push_back( current-> data );
-// 		current = current-> getNext();
-// 	}
-// }
+template < class T >
+SList< T >::SList( const SList< T >& source ) : NodesCount( 0 ), head( nullptr ), tail( nullptr ) {
+	Iterator< T > it;
+	it = source.head;
+	for ( ; it != nullptr; ++it )
+		this-> push_back( *it );
+}
 
-// template < class T >
-// SList< T >& SList< T >::operator = ( const SList < T > & source ) {
-// 	if ( this != &source ) {
-// 		clear();
-// 		for( Node< T >* current = source.head; current != nullptr; current = current-> getNext() )
-// 			push_back( current-> data );
-// 	}
-// 	return *this;
-// }
+template < class T >
+SList< T >& SList< T >::operator = ( SList < T > & source ) { //ZLE DZIALA JEZELI JEST COS USUNIETE Z SRODKA
+	if ( this != &source ) {
+		clear();
+		Iterator< T > it;
+		it = (source.begin());
+		for ( ;it != nullptr; ++it ) {
+			this-> push_back( *it );
+		}
+	}
+	return *this;
+}
 
 template < class T >
 void SList< T >::clear() {
@@ -196,36 +154,6 @@ template < class T >
 int SList< T >::size() const {
 	return NodesCount;
 }
-
-// template < class T >
-// Node< T >& SList< T >::front() const {
-// 	return *head;
-// }
-
-// template < class T >
-// Node< T >& SList< T >::back() const {
-// 	return *tail;
-// }
-
-// template < class T >
-// void SList< T >::insert_after( Iterator< T > position, const T & value ) {
-// 	Node< T >* newNode = new Node< T >( value, position.ptr-> getNext );
-// 	if ( position == end() )
-// 		tail = newNode;
-// 	position.ptr-> setNextNode( newNode );
-// }
-
-// template < class T >
-// void SList< T >::erase_after( Iterator< T > position ) {
-// 	if ( position == end() )
-// 		return;
-// 	Node< T >* toDelete = ++position.ptr;
-// 	Node< T >* nextOfDeleted = toDelete-> getNext();
-// 	position.ptr-> setNextNode( nextOfDeleted );
-// 	if( toDelete == back() )
-// 		tail = position.ptr;
-// 	delete toDelete;
-// }
 
 template < class T >
 void SList< T >::printList() {
@@ -260,3 +188,107 @@ Iterator< T > SList< T >::search( T& demanded ) {
 	else
 		throw LackElement();
 }
+
+template < class T >
+void SList< T >::pushInFirstEmpty( T& d ) {
+	Node< T >* current = head;
+	while( ( current != nullptr ) && ( current-> getAmountOfElements() == ARRAY_MAX_SIZE ) ) {
+		current = (current-> getNextNode());
+	}
+	if ( current == nullptr ) 
+		push_back( d );
+	else
+		current-> setDataInArray( d, current-> getAmountOfElements() );
+	return;
+}
+
+template < class T >
+void SList< T >::erase( Iterator< T > position ) {
+	if ( empty() )
+			throw EmptyList();
+	if( begin() == end() ) {
+		delete tail;
+		head = nullptr;
+		tail = nullptr;
+		--NodesCount;
+	}
+	else if ( ( position.getNode() )-> deleteElement( *position ) == 0 ) {
+		Node< T >* current = head;
+		Node< T >* previous = nullptr;
+		while ( current != position.getNode() ) {
+			previous = current;
+			current = current-> getNextNode();
+		}
+		previous-> setNextNode( (position.getNode())-> getNextNode() );
+		delete position.getNode();
+		--NodesCount;
+	}
+	else {
+		Iterator< T > current = ++position;
+		Iterator< T > previous = position;
+		while( current.getNode() != position.getNode()-> getNextNode() ) {
+			*previous = *current;
+			previous = current;
+			++current;
+		}
+	}
+}
+// template < class T >
+// Node< T >& SList< T >::front() const {
+// 	return *head;
+// }
+
+// template < class T >
+// Node< T >& SList< T >::back() const {
+// 	return *tail;
+// }
+
+// template < class T >
+// void SList< T >::insert_after( Iterator< T > position, const T & value ) {
+// 	Node< T >* newNode = new Node< T >( value, position.ptr-> getNext );
+// 	if ( position == end() )
+// 		tail = newNode;
+// 	position.ptr-> setNextNode( newNode );
+// }
+
+// template < class T >
+// void SList< T >::erase_after( Iterator< T > position ) {
+// 	if ( position == end() )
+// 		return;
+// 	Node< T >* toDelete = ++position.ptr;
+// 	Node< T >* nextOfDeleted = toDelete-> getNext();
+// 	position.ptr-> setNextNode( nextOfDeleted );
+// 	if( toDelete == back() )
+// 		tail = position.ptr;
+// 	delete toDelete;
+// }
+// template < class T >
+// void SList< T >::push_front( T& d ) {
+// 	Node< T >* newHead = new Node< T >( d, head );
+
+// 	if ( this-> empty() ) {
+// 		head = newHead;
+// 		tail = newHead;
+// 	}
+// 	else
+// 		head = newHead;
+// 	++count;
+// }
+
+// template < class T >
+// void SList< T >::pop_front() {
+
+//     if( empty() )
+//         throw EmptyList();
+
+// 	Node< T >* oldHead = head;
+
+// 	if ( size() == 1 ) {
+// 		head = nullptr;
+// 		tail = nullptr;
+// 	}
+// 	else
+// 		head = head-> getNext();
+// 	delete oldHead;
+// 	--count;
+// }

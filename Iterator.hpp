@@ -20,6 +20,7 @@ class Iterator {
 		bool operator != ( const Iterator& ) const;
 		bool operator == ( const Iterator& ) const;
 		T& operator * () const;
+		Node< T >* getNode() const;
 // 		T& operator -> () const;
 
 	private:
@@ -47,7 +48,7 @@ Iterator< T > Iterator< T >::operator ++() {
 		
 	}
 	else {
-		std::cout << "------" << std::endl;
+		 std::cout << "------" << std::endl;
 		pointer = pointer-> getNextNode();
 		positionInArray = 0;
  	}
@@ -77,6 +78,10 @@ T& Iterator< T >::operator * () const {
 	return pointer-> getData( positionInArray );
 }
 
+template < class T >
+Node< T >* Iterator< T >::getNode() const {
+	return pointer;
+}
 // template < class T >
 // T& Iterator< T >::operator -> () const {
 // 	return ptr-> getData();

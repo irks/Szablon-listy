@@ -16,6 +16,7 @@ class Node {
 			delete elements;
 
 		}
+		Node< T >& operator = ( const Node< T >& );
 		Node< T >* getNextNode();
 		T& getData( int = 0 );
 		void setNextNode( Node< T >* = nullptr );
@@ -23,6 +24,14 @@ class Node {
 		int getAmountOfElements();
 		int deleteElement( T& );
 };
+
+template < class T >
+Node< T >& Node< T >::operator = ( const Node< T >& source ) {
+	elementsInArray = source.elementsInArray;
+	next = nullptr;
+	elements = source.elements;
+	return *this;
+}
 
 template < class T >
 Node< T >* Node< T >::getNextNode() {
