@@ -6,6 +6,7 @@ int main() {
 	int choice;
 	int element;
 	SList< int > list;
+    Iterator< int > result;
 
 	while( menu ) {
 
@@ -13,12 +14,15 @@ int main() {
             cout << "===================================================================" << endl;
             cout << "Jaka operacje chcesz wykonac? Wcisnij odpowiedni numer" << endl;
             cout << "1. Dodac nowy element" << endl;
-//         cout << "2. Usunac element" << endl;
+            cout << "2. Usunac element" << endl;
             cout << "3. Wyswietlic ilosc wezlow listy" << endl;
             cout << "4. Sprawdzic czy baza jest pusta" << endl;
             cout << "5. Wyczyscic baze" << endl;
             cout << "6. Wyswietlic baze" << endl;
             cout << "7. Wyjsc z programu" << endl;
+            cout << "8. Liczba wszystkich elementow" << endl;
+            cout << "9. Wyszukaj" << endl;
+            cout << "10. seed " << endl;
             cout << "===================================================================" << endl;
 
             cin >> choice;
@@ -27,7 +31,6 @@ int main() {
 
                 switch( choice ) {
                 	case 1:
-                                // list.test();
         //                 cout << "===================================================================" << endl;
         //                 cout << "Jaka operacje chcesz wykonac? Wcisnij odpowiedni numer" << endl;
         //                 cout << "1. Dodac nowy element na koniec listy" << endl;
@@ -70,27 +73,16 @@ int main() {
         //                 cout << "1. Usunac element z poczatku listy" << endl;
         //                 cout << "2. Usunac element z konca listy" << endl;
         //                 cout << "===================================================================" << endl;
-                            for(int i = 0; i < 26; ++i)
-                                list.push_back(i);
+                            
         //                 cin >> wybor;
 
         //                 switch( wybor ) {
         //                     case 1:
-        //                         try {
-        //                             lista.pop_back();
-        //                         }
-        //                         catch( ) {
-
-        //                         }
+                                    list.pop_back();
         //                         break;
         //                     case 2:
-        //                         try {
         //                             lista.pop_front();
-        //                         }
-        //                         catch( ) {
-
-        //                         }
-        //                         break;
+        //                                 //                         break;
         //                     default:
         //                         cout << "Musisz podac numer odpowiadajacy danemu dzialaniu!" << endl;
         //                         break;
@@ -111,13 +103,22 @@ int main() {
                             list.clear();
                         break;
                 	case 6:
-                                list.printList();
+                        list.printList();
                 		break;
                 	case 7:
                         menu = false;
                         break;
                     case 8:
                         cout << endl << "Liczba wszystkich elementow: " << list.sizeElementsInArrays(); cout << endl;
+                        break;
+                    case 9:
+                        cin >> choice;
+                        result = list.search( choice );
+                        cout << (*result) << endl;
+                        break;
+                    case 10:
+                        for(int i = 0; i < 26; ++i)
+                                list.push_back(i);
                         break;
                 	default:
                 		cout << "Musisz podac numer odpowiadajacy danemu dzialaniu!" << endl;

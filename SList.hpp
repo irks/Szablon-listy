@@ -1,10 +1,7 @@
 #include <iostream>
-
 #include "Iterator.hpp"
 #include "MyExceptions.hpp"
-
 const int ARRAY_MAX_SIZE = 5;
-
 template < class T >
 class SList {
 private:
@@ -15,48 +12,29 @@ public:
 	SList() : head( nullptr ), tail( nullptr ), NodesCount( 0 ) {}
 // 	SList< T >& operator = ( const SList< T >& );
 // 	SList( const SList< T >& );
-	~SList() noexcept { 
-		clear();
-	}
+	~SList() noexcept;
 // 	void push_front( T& );
 // 	void pop_front();
 	void push_back( T& );
-	// void pop_back();
+	void pop_back();
 // 	void insert_after( Iterator< T >, const T & );
 // 	void erase_after( Iterator< T > position );
 	int sizeElementsInArrays() const;
 	int size() const;
 	bool empty() const;
-	// void test();
 	void clear();
+	Iterator< T > search( T& );
 // 	Node< T >& front() const; //do usuniecia
 // 	Node< T >& back() const;
 	Iterator< T > begin();
 	Iterator< T > end();
 	void printList();
 };
-// template < class T >
-// void SList< T >::test() {
-// 	Iterator< T > it;
-// 	it = begin();
-// 	std::cout << (it != end()) << std::endl;
-// 	while(!(it==end())) {
-// 		std::cout << !(it == end()) << std::endl;
-// 		++it;
-// 	}
 
-// 	head = new Node< T >( );
-// 	head -> setNextNode( new Node< T >( ) );
-// 	Iterator< T > it;
-// 	it = Iterator< T >( head );
-// 	++it;
-// 	std::cout << *it << std::endl;
-// }
-// template < class T >
-// SList< T >::~SList() noexcept {
-// 	clear();
-// 	delete this;
-// }
+template < class T >
+SList< T >::~SList() noexcept {
+	clear();
+}
 
 template < class T >
 Iterator< T > SList< T >::begin() {
@@ -121,10 +99,8 @@ void SList< T >::push_back( T& d ) {
 		++NodesCount;
 		return;
 	}
-	if ( tail -> getAmountOfElements() < ARRAY_MAX_SIZE ) {
+	if ( tail -> getAmountOfElements() < ARRAY_MAX_SIZE ) 
 		tail-> setDataInArray( d, tail-> getAmountOfElements() );
-		
-	}
 	else {
 		Node< T >* newTail = new Node< T >();
 		tail -> setNextNode( newTail );
@@ -133,24 +109,34 @@ void SList< T >::push_back( T& d ) {
 		tail = newTail;
 		++NodesCount;
 	}
-	
-
-// 	if ( this-> empty() )
-// 		head = newTail;
-
-// 	tail = newTail;
-// 	++count;
 }
 
-// template < class T >
-// void SList< T >::pop_back() {
+template < class T >
+void SList< T >::pop_back() {
+	if ( empty() )
+		throw EmptyList();
+	if( begin() == end() ) {
+		delete tail;
+		head = nullptr;
+		tail = nullptr;
+		--NodesCount;
+	}
 
+	else if ( tail-> deleteElement( *end() ) == 0 ) {
+		Node< T >* current = head;
+		Node< T >* previous = nullptr;
+		while ( current != tail ) {
+			previous = current;
+			current = current-> getNextNode();
+		}
+		delete tail;
+		tail = previous;
+		tail-> setNextNode( nullptr );
+		--NodesCount;
+	}
 // 	Node< T >* oldTail = tail;
 
-// 	if( begin() == end() ) {
-// 		head = nullptr;
-// 		tail = nullptr;
-// 	}
+	
 // 	else {
 // 		Node< T >* current = head;
 // 		while( current-> getNext() != tail)
@@ -161,7 +147,7 @@ void SList< T >::push_back( T& d ) {
 
 // 	delete oldTail;
 // 	--count;
-// }
+}
 
 // template < class T >
 // SList< T >::SList( const SList< T >& source ) : count( 0 ), head( NULL ), tail( NULL ) {
@@ -255,4 +241,22 @@ void SList< T >::printList() {
 	return;
 }
 
-// //search
+template < class T >
+Iterator< T > SList< T >::search( T& demanded ) {
+	if( empty() )
+        throw EmptyList();
+
+	Iterator< T > it; 
+	it =  begin();
+	
+	for( ; it != end(); ++it ) { //JEZELI NIE ZNAJDZIE 
+		if( *it == demanded ) {
+			return it;
+		}
+	}
+	if( *it == demanded ) {
+		return it;
+	}
+	else
+		throw LackElement();
+}

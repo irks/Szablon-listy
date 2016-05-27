@@ -18,7 +18,7 @@ class Iterator {
 // 		Iterator< T >& operator ++ ( T );
 		void operator = ( const Iterator& );
 		bool operator != ( const Iterator& ) const;
-		bool operator == ( Iterator& );
+		bool operator == ( const Iterator& ) const;
 		T& operator * () const;
 // 		T& operator -> () const;
 
@@ -68,7 +68,7 @@ bool Iterator< T >::operator != ( const Iterator& it2 ) const {
 }
 
 template < class T >
-bool Iterator< T >::operator == ( Iterator& it2 ) {
+bool Iterator< T >::operator == ( const Iterator& it2 ) const {
 	return ( pointer == it2.pointer ) && ( positionInArray == it2.positionInArray);
 }
 

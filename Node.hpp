@@ -14,13 +14,14 @@ class Node {
 		}
 		~Node< T >() {
 			delete elements;
-			
+
 		}
 		Node< T >* getNextNode();
 		T& getData( int = 0 );
 		void setNextNode( Node< T >* = nullptr );
 		void setDataInArray( T&, int = 0 );
 		int getAmountOfElements();
+		int deleteElement( T& );
 };
 
 template < class T >
@@ -45,5 +46,12 @@ void Node< T >::setDataInArray( T& d, int place ) {
 
 template < class T >
 int Node< T >::getAmountOfElements() {
+	return elementsInArray;
+}
+
+template < class T >
+int Node< T >::deleteElement( T& element ) {
+	element = 0;
+	--elementsInArray;
 	return elementsInArray;
 }
