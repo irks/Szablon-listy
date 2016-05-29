@@ -1,3 +1,6 @@
+//zrobic zabezpieczenie przed podaniem string do int
+//end() na nullptr
+
 #include <iostream>
 
 #include "SList.hpp"
@@ -23,7 +26,7 @@ int main() {
         std::cout << "6.  Liczba wszystkich elementow w liscie" << std::endl;
         std::cout << "7.  Wyswietlic baze" << std::endl;
         std::cout << "8.  Wyszukaj elementu o podanej wartosci" << std::endl;
-        std::cout << "9.  Wyczyscic liste i aapelnic ja elementami od -10 do 100" << std::endl;
+        std::cout << "9.  Zapelnic liste elementami od -10 do 100" << std::endl;
         std::cout << "10. Wyczyscic baze " << std::endl;
         std::cout << "11. Wyjsc z programu" << std::endl;
         std::cout << "===================================================================" << std::endl;
@@ -34,13 +37,13 @@ int main() {
             
             switch( choice ) {
             	case 1:
-                    std::cout << "Podaj wartosc" << std::endl;
+                    std::cout << "Podaj wartosc elementu: " << std::endl;
                     std::cin >> element;
                     list.push_back( element );
                     break;
 
             	case 2:
-                    std::cout << "Podaj wartosc" << std::endl;
+                    std::cout << "Podaj wartosc elementu: " << std::endl;
                     std::cin >> element;
                     list.pushInFirstEmpty( element );
                     break;
@@ -50,18 +53,20 @@ int main() {
                     break;
 
             	case 4:
-            		std::cout << "Podaj wartosc" << std::endl;
+            		std::cout << "Podaj wartosc elementu: " << std::endl;
                     std::cin >> element;
                     result = list.search( element );
                     list.erase( result );
                     break;
 
             	case 5:
-                    std::cout << std::endl << "Liczba wezlow w liscie: " << list.size(); std::cout << std::endl;
+                    std::cout << std::endl << "Liczba wezlow w liscie: " << list.size(); 
+                    std::cout << std::endl;
                     break;
 
             	case 6:
-                    std::cout << std::endl << "Liczba wszystkich elementow: " << list.sizeElementsInArrays(); std::cout << std::endl;
+                    std::cout << std::endl << "Liczba wszystkich elementow: " << list.sizeElementsInArrays(); 
+                    std::cout << std::endl;
             		break;
 
             	case 7:
@@ -69,8 +74,9 @@ int main() {
                     break;
 
                 case 8:
-                    std::cin >> choice;
-                    result = list.search( choice );
+                    std::cout << "Podaj wartosc szukanego elementu: " << std::endl;
+                    std::cin >> element;
+                    result = list.search( element );
                     std::cout << (*result) << std::endl;
                     break;
 
@@ -80,7 +86,17 @@ int main() {
                     break;
 
                 case 10:
-                    list.clear();
+                    std::cout << "Czy na pewno chcesz wyczyscic baze?" << std::endl;
+                    std::cout << "Jezeli tak, podaj '1', jezeli chcesz anulowac ta operacje podaj dowolny inny znak" << std::endl;
+                    std::cin >> choice;
+
+                    switch( choice ) {
+                        case 1:
+                            list.clear();
+                            break;
+                        default:
+                            break;
+                    }
                     break;
 
                 case 11:
@@ -90,7 +106,6 @@ int main() {
             	default:
             		std::cout << "Musisz podac numer odpowiadajacy danemu dzialaniu!" << std::endl;
                     break;
-
             } //switch
         } //try
 
@@ -99,9 +114,6 @@ int main() {
         }
         catch( LackElement &e) {
             std::cerr << e.what();
-        }
-        catch( IteratorIndex &e ) {
-           std::cerr << e.what();
         }
         catch( ... ) {
             std::cerr << "Niespodziewany wyjatek";

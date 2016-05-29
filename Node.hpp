@@ -4,13 +4,13 @@ template < typename T >
 class Node {
 
 	private:
-		T* elements;
-		Node* next;
-		int elementsInArray;
+		T* elements_;
+		Node* next_;
+		int elementsInArray_;
 
 	public:
 		Node< T >( Node< T >* = nullptr );
-		~Node< T >() noexcept { delete[] elements; }
+		~Node< T >() noexcept { delete[] elements_; }
 		Node< T >& operator = ( const Node< T >& );
 		Node< T >* getNextNode() const;
 		T& getData( const int = 0 ) const;
@@ -21,47 +21,47 @@ class Node {
 };
 
 template < typename T >
-Node< T >::Node( Node< T >* n ) : next( n ), elementsInArray( 0 ) {
-	elements = new T[ ARRAY_MAX_SIZE ];
+Node< T >::Node( Node< T >* n ) : next_( n ), elementsInArray_( 0 ) {
+	elements_ = new T[ ARRAY_MAX_SIZE ];
 }
 
 template < typename T >
 Node< T >& Node< T >::operator = ( const Node< T >& source ) {
-	elementsInArray = source.elementsInArray;
-	next = nullptr;
-	elements = source.elements;
+	elementsInArray_ = source.elementsInArray_;
+	next_ = nullptr;
+	elements_ = source.elements_;
 	return *this;
 }
 
 template < typename T >
 Node< T >* Node< T >::getNextNode() const {
-	return next;
+	return next_;
 }
 
 template < typename T >
 T& Node< T >::getData( const int numberInArray ) const {
-	return  elements[ numberInArray ] ;
+	return  elements_[ numberInArray ] ;
 }
 
 template < typename T >
 void Node< T >::setNextNode( Node< T >* n ) {
-	next = n;
+	next_ = n;
 }
 
 template < typename T >
 void Node< T >::setDataInArray( const T& d, const int place ) {
-	elements[ place ] = d;
-	++elementsInArray;
+	elements_[ place ] = d;
+	++elementsInArray_;
 }
 
 template < typename T >
 int Node< T >::getAmountOfElements() const {
-	return elementsInArray;
+	return elementsInArray_;
 }
 
 template < typename T >
 int Node< T >::deleteElement( T& element ) {
 	element = 0;
-	--elementsInArray;
-	return elementsInArray;
+	--elementsInArray_;
+	return elementsInArray_;
 }

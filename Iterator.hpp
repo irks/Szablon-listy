@@ -9,8 +9,8 @@ template < typename T >
 class Iterator {
 
 	private:
-		Node< T >* pointer;
-		int positionInArray;
+		Node< T >* pointer_;
+		int positionInArray_;
 
 	public:
 		Iterator< T >( Node< T >* = nullptr, const int = 0 );
@@ -26,36 +26,36 @@ class Iterator {
 };
 
 template < typename T >
-Iterator< T >::Iterator( Node< T >* ptr, const int position ) : pointer( ptr ), positionInArray( position ) {}
+Iterator< T >::Iterator( Node< T >* ptr, const int position ) : pointer_( ptr ), positionInArray_( position ) {}
 
 template < typename T >
-Iterator< T >::Iterator( const Iterator< T >& source ) : pointer( source.pointer ), positionInArray( source.positionInArray ) {}
+Iterator< T >::Iterator( const Iterator< T >& source ) : pointer_( source.pointer_ ), positionInArray_( source.positionInArray_ ) {}
 
 template < typename T >
 void Iterator< T >::operator = ( const Iterator< T >& source ) {
-	pointer = source.pointer;
-	positionInArray = source.positionInArray;
+	pointer_ = source.pointer_;
+	positionInArray_ = source.positionInArray_;
 }
 
 template < typename T >
 bool Iterator< T >::operator != ( const Iterator& it2 ) const {
-	bool pointersEqual = pointer == it2.pointer;
-	bool positionsEqual = positionInArray == it2.positionInArray;
-	return ( ! ( pointersEqual && positionsEqual ) );
+	bool pointer_sEqual = pointer_ == it2.pointer_;
+	bool positionsEqual = positionInArray_ == it2.positionInArray_;
+	return ( ! ( pointer_sEqual && positionsEqual ) );
 }
 
 template < typename T >
 bool Iterator< T >::operator == ( const Iterator& it2 ) const {
-	return ( pointer == it2.pointer ) && ( positionInArray == it2.positionInArray);
+	return ( pointer_ == it2.pointer_ ) && ( positionInArray_ == it2.positionInArray_);
 }
 
 template < typename T >
 Iterator< T >& Iterator< T >::operator ++() {
-	if( positionInArray < ( pointer->getAmountOfElements() - 1 ) ) 
-		++positionInArray;
+	if( positionInArray_ < ( pointer_->getAmountOfElements() - 1 ) ) 
+		++positionInArray_;
 	else {
-		pointer = pointer-> getNextNode();
-		positionInArray = 0;
+		pointer_ = pointer_-> getNextNode();
+		positionInArray_ = 0;
  	}
 	return *this;
 }
@@ -69,15 +69,15 @@ Iterator< T > Iterator< T >::operator ++ ( int ) {
 
 template < typename T >
 T& Iterator< T >::operator * () {
-	return pointer-> getData( positionInArray );
+	return pointer_-> getData( positionInArray_ );
 }
 
 template < typename T >
 T Iterator< T >::operator * () const {
-	return pointer-> getData( positionInArray );
+	return pointer_-> getData( positionInArray_ );
 }
 
 template < typename T >
 Node< T >* Iterator< T >::getNode() const {
-	return pointer;
+	return pointer_;
 }
