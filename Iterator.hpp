@@ -13,13 +13,17 @@ class Iterator {
 			positionInArray = position;
 
 		}
-// 		//Iterator< T >( Iterator< T >& );
-		Iterator< T > operator ++ ();
-// 		Iterator< T >& operator ++ ( T );
+ 		Iterator< T >( const Iterator< T >& source ) {
+ 			pointer = source.pointer;
+ 			positionInArray = source.positionInArray;
+ 		}
+		Iterator< T >& operator ++ ();
+ 		Iterator< T > operator ++ ( int );
 		void operator = ( const Iterator& );
 		bool operator != ( const Iterator& ) const;
 		bool operator == ( const Iterator& ) const;
-		T& operator * () const;
+		T& operator * ();
+		T operator * () const;
 		Node< T >* getNode() const;
 // 		T& operator -> () const;
 
@@ -37,7 +41,7 @@ void Iterator< T >::operator = ( const Iterator< T >& source ) {
 // //odroznic post i pre
 
 template < class T >
-Iterator< T > Iterator< T >::operator ++() {
+Iterator< T >& Iterator< T >::operator ++() {
     // if( pointer-> getNextNode() == nullptr ) {
     //     throw IteratorIndex();
     // }
@@ -55,11 +59,12 @@ Iterator< T > Iterator< T >::operator ++() {
 // 	ptr = ptr-> getNext();
 	return *this;
 }
-// template < class T >
-// Iterator< T >& Iterator< T >::operator ++ ( T ) {
-// 	ptr = ptr-> getNext();
-// 	return *this;
-// }
+template < class T >
+Iterator< T > Iterator< T >::operator ++ ( int ) {
+	Iterator< T > tmp(*this);
+	operator++();
+	return tmp;
+}
 
 template < class T >
 bool Iterator< T >::operator != ( const Iterator& it2 ) const {
@@ -74,9 +79,15 @@ bool Iterator< T >::operator == ( const Iterator& it2 ) const {
 }
 
 template < class T >
-T& Iterator< T >::operator * () const {
+T& Iterator< T >::operator * () {
 	return pointer-> getData( positionInArray );
 }
+
+template < class T >
+T Iterator< T >::operator * () const {
+	return pointer-> getData( positionInArray );
+}
+
 
 template < class T >
 Node< T >* Iterator< T >::getNode() const {

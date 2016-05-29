@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Iterator.hpp"
 #include "MyExceptions.hpp"
-const int ARRAY_MAX_SIZE = 5;
+const int ARRAY_MAX_SIZE = 8;
 template < class T >
 class SList {
 private:
@@ -12,9 +12,9 @@ public:
 	SList() : head( nullptr ), tail( nullptr ), NodesCount( 0 ) {}
 	SList< T >& operator = ( SList< T >& );
 	SList( const SList< T >& );
-	~SList() noexcept;
+	~SList() ;
 // 	void push_front( T& );
-// 	void pop_front();
+	void pop_front();
 	void push_back( T& );
 	void pop_back();
 // 	void insert_after( Iterator< T >, const T & );
@@ -33,7 +33,7 @@ public:
 };
 
 template < class T >
-SList< T >::~SList() noexcept {
+SList< T >::~SList()  {
 	clear();
 }
 
@@ -206,30 +206,31 @@ template < class T >
 void SList< T >::erase( Iterator< T > position ) {
 	if ( empty() )
 			throw EmptyList();
-	if( begin() == end() ) {
-		delete tail;
-		head = nullptr;
-		tail = nullptr;
-		--NodesCount;
-	}
-	else if ( ( position.getNode() )-> deleteElement( *position ) == 0 ) {
-		Node< T >* current = head;
-		Node< T >* previous = nullptr;
-		while ( current != position.getNode() ) {
-			previous = current;
-			current = current-> getNextNode();
+	if( position == end() ) 
+		pop_back();	
+	else  {
+		Node< T >* positionNode = position.getNode();
+		if ( positionNode-> getAmountOfElements() == 1 ) {
+			Node< T >* current = head;
+			Node< T >* previous = nullptr;
+			while ( current != positionNode ) {
+				previous = current;
+				current = current-> getNextNode();
+			}
+			previous-> setNextNode( positionNode-> getNextNode() );
+			delete positionNode;
+			--NodesCount;
 		}
-		previous-> setNextNode( (position.getNode())-> getNextNode() );
-		delete position.getNode();
-		--NodesCount;
-	}
-	else {
-		Iterator< T > current = ++position;
-		Iterator< T > previous = position;
-		while( current.getNode() != position.getNode()-> getNextNode() ) {
-			*previous = *current;
-			previous = current;
+		else {
+			Iterator< T > current = position;
 			++current;
+			Iterator< T > previous = position;
+			while( current.getNode() == positionNode ) {
+				previous = current;
+				++current;
+			}
+			*position = *previous;
+			positionNode-> deleteElement( *previous );
 		}
 	}
 }
@@ -252,17 +253,6 @@ void SList< T >::erase( Iterator< T > position ) {
 // }
 
 // template < class T >
-// void SList< T >::erase_after( Iterator< T > position ) {
-// 	if ( position == end() )
-// 		return;
-// 	Node< T >* toDelete = ++position.ptr;
-// 	Node< T >* nextOfDeleted = toDelete-> getNext();
-// 	position.ptr-> setNextNode( nextOfDeleted );
-// 	if( toDelete == back() )
-// 		tail = position.ptr;
-// 	delete toDelete;
-// }
-// template < class T >
 // void SList< T >::push_front( T& d ) {
 // 	Node< T >* newHead = new Node< T >( d, head );
 
@@ -275,11 +265,10 @@ void SList< T >::erase( Iterator< T > position ) {
 // 	++count;
 // }
 
-// template < class T >
-// void SList< T >::pop_front() {
-
-//     if( empty() )
-//         throw EmptyList();
+template < class T >
+void SList< T >::pop_front() {
+	erase( begin() );
+}
 
 // 	Node< T >* oldHead = head;
 
