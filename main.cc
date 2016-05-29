@@ -1,190 +1,110 @@
 #include <iostream>
+
 #include "SList.hpp"
 
-#include <ctime>
-#include <chrono>
-#include <list>
-using namespace std;
 int main() {
 	bool menu = true;
 	int choice;
 	int element;
 	SList< int > list;
-    SList< int > list2;
-    
+    SList< int > list2;  
     Iterator< int > result;
-    std::list< int > list_test;
-
-    /*std::chrono::time_point<std::chrono::system_clock> start, end;
-    start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000000; ++i)
-            list.push_back(i);
-    end = std::chrono::system_clock::now();
- std::chrono::duration<double> elapsed_seconds = end-start;
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
- 
-    std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
-
-
-    start = std::chrono::system_clock::now();
-    for(int i = 0; i < 1000000; ++i)
-            list_test.push_back(i);
-    end = std::chrono::system_clock::now();
- 
-    elapsed_seconds = end-start;
-    end_time = std::chrono::system_clock::to_time_t(end);
- 
-    std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";*/
-
 
 	while( menu ) {
 
-		    cout << endl << endl;
-            cout << "===================================================================" << endl;
-            cout << "Jaka operacje chcesz wykonac? Wcisnij odpowiedni numer" << endl;
-            cout << "1. Dodac nowy element" << endl;
-            cout << "2. Usunac element" << endl;
-            cout << "3. Wyswietlic ilosc wezlow listy" << endl;
-            cout << "4. Sprawdzic czy baza jest pusta" << endl;
-            cout << "5. Wyczyscic baze" << endl;
-            cout << "6. Wyswietlic baze" << endl;
-            cout << "7. Wyjsc z programu" << endl;
-            cout << "8. Liczba wszystkich elementow" << endl;
-            cout << "9. Wyszukaj" << endl;
-            cout << "10. seed " << endl;
-            cout << "11. test operatora = " << endl;
-            cout << "12. dodaj na pierwsze wolne " << endl;
-            cout << "13. erase o danej wartosci" << endl;
-            cout << "===================================================================" << endl;
+	    std::cout << std::endl << std::endl;
+        std::cout << "===================================================================" << std::endl;
+        std::cout << "Jaka operacje chcesz wykonac? Wcisnij odpowiedni numer" << std::endl;
+        std::cout << "1.  Dodac nowy element na koniec listy" << std::endl;
+        std::cout << "2.  Dodaj nowy element na pierwsze wolne miejsce w liscie " << std::endl;
+        std::cout << "3.  Usunac element z konca listy " << std::endl;
+        std::cout << "4.  Usun element o podanej wartosci ( usuwa pierszy znaleziony element o tej wartosci )" << std::endl;
+        std::cout << "5.  Wyswietlic ilosc wezlow listy" << std::endl;
+        std::cout << "6.  Liczba wszystkich elementow w liscie" << std::endl;
+        std::cout << "7.  Wyswietlic baze" << std::endl;
+        std::cout << "8.  Wyszukaj elementu o podanej wartosci" << std::endl;
+        std::cout << "9.  Wyczyscic liste i aapelnic ja elementami od -10 do 100" << std::endl;
+        std::cout << "10. Wyczyscic baze " << std::endl;
+        std::cout << "11. Wyjsc z programu" << std::endl;
+        std::cout << "===================================================================" << std::endl;
 
-            cin >> choice;
+        std::cin >> choice;
 
-            try {
-                
-                switch( choice ) {
-                	case 1:
-        //                 cout << "===================================================================" << endl;
-        //                 cout << "Jaka operacje chcesz wykonac? Wcisnij odpowiedni numer" << endl;
-        //                 cout << "1. Dodac nowy element na koniec listy" << endl;
-        //                 cout << "2. Dodac nowy element na poczatek listy" << endl;
-        //                 cout << "===================================================================" << endl;
+        try {
+            
+            switch( choice ) {
+            	case 1:
+                    std::cout << "Podaj wartosc" << std::endl;
+                    std::cin >> element;
+                    list.push_back( element );
+                    break;
 
-        //                 cin >> choice;
+            	case 2:
+                    std::cout << "Podaj wartosc" << std::endl;
+                    std::cin >> element;
+                    list.pushInFirstEmpty( element );
+                    break;
 
-        //                 switch( choice ) {
-        //                     case 1:
-                                cout << "Podaj wartosc" << endl;
-                                cin >> element;
-        //                         try {
-                                    list.push_back( element );
-        //                         }
-        //                         catch( std::bad_alloc) {
+            	case 3:
+                    list.pop_back();
+                    break;
 
-        //                         }
-        //                         break;
-        //                     case 2:
-        //                         cout << "Podaj wartosc" << endl;
-        //                         cin >> element;
-        //                         try {
-        //                             lista.push_front( element );
-        //                         }
-        //                         catch( std::bad_alloc) {
+            	case 4:
+            		std::cout << "Podaj wartosc" << std::endl;
+                    std::cin >> element;
+                    result = list.search( element );
+                    list.erase( result );
+                    break;
 
-        //                         }
-        //                         break;
-        //                     default:
-        //                         cout << "Musisz podac numer odpowiadajacy danemu dzialaniu!" << endl;
-        //                         break;
-        //                 }
+            	case 5:
+                    std::cout << std::endl << "Liczba wezlow w liscie: " << list.size(); std::cout << std::endl;
+                    break;
 
-                        break;
+            	case 6:
+                    std::cout << std::endl << "Liczba wszystkich elementow: " << list.sizeElementsInArrays(); std::cout << std::endl;
+            		break;
 
-                	case 2:
-        //         		cout << "===================================================================" << endl;
-        //                 cout << "Jaka operacje chcesz wykonac? Wcisnij odpowiedni numer" << endl;
-        //                 cout << "1. Usunac element z poczatku listy" << endl;
-        //                 cout << "2. Usunac element z konca listy" << endl;
-        //                 cout << "===================================================================" << endl;
-                            
-        //                 cin >> wybor;
+            	case 7:
+                    list.printList();
+                    break;
 
-        //                 switch( wybor ) {
-        //                     case 1:
-                                    list.pop_back();
-        //                         break;
-        //                     case 2:
-        //                             lista.pop_front();
-        //                                 //                         break;
-        //                     default:
-        //                         cout << "Musisz podac numer odpowiadajacy danemu dzialaniu!" << endl;
-        //                         break;
-        //                 }
+                case 8:
+                    std::cin >> choice;
+                    result = list.search( choice );
+                    std::cout << (*result) << std::endl;
+                    break;
 
-                        break;
+                case 9:
+                    for(int i = -10; i < 100; ++i)
+                        list.push_back(i);
+                    break;
 
-                	case 3:
-                		cout << endl << "Liczba wezlow w liscie: " << list.size(); cout << endl;
-                        break;
-                	case 4:
-                		if ( list.empty() )
-                            cout << "Baza pusta" << endl;
-                        else
-                            cout << "Baza nie jest pusta" << endl;
-                        break;
-                	case 5:
-                            list.clear();
-                        break;
-                	case 6:
-                        list.printList();
-                		break;
-                	case 7:
-                        menu = false;
-                        break;
-                    case 8:
-                        cout << endl << "Liczba wszystkich elementow: " << list.sizeElementsInArrays(); cout << endl;
-                        break;
-                    case 9:
-                        cin >> choice;
-                        result = list.search( choice );
-                        cout << (*result) << endl;
-                        break;
-                    case 10:
-                        for(int i = 0; i < 26; ++i)
-                                list.push_back(i);
-                        break;
-                    case 11:
-                        for(int i = -21; i < 55; ++i)
-                                list2.push_back(i);
-                        list = list2;
-                        break;
-                    case 12:
-                        cout << "Podaj wartosc" << endl;
-                        cin >> element;
-                        list.pushInFirstEmpty( element );
-                        break;
-                    case 13:
-                        cout << "Podaj wartosc" << endl;
-                        cin >> element;
-                        result = list.search( element );
-                        list.erase( result );
-                        break;
-                	default:
-                		cout << "Musisz podac numer odpowiadajacy danemu dzialaniu!" << endl;
-                        break;
+                case 10:
+                    list.clear();
+                    break;
 
-                } //switch
-            } //try
-            catch( EmptyList &e ) {
-                std::cerr << e.what();
-            }
-            catch( LackElement &e) {
-                std::cerr << e.what();
-            }
-            catch( IteratorIndex &e ) {
-               std::cerr << e.what();
-            }
-            catch( ... ) {
-                std::cerr << "Niespodziewany wyjatek";
-            }
-	}
-}
+                case 11:
+                    menu = false;
+                    break;
+
+            	default:
+            		std::cout << "Musisz podac numer odpowiadajacy danemu dzialaniu!" << std::endl;
+                    break;
+
+            } //switch
+        } //try
+
+        catch( EmptyList &e ) {
+            std::cerr << e.what();
+        }
+        catch( LackElement &e) {
+            std::cerr << e.what();
+        }
+        catch( IteratorIndex &e ) {
+           std::cerr << e.what();
+        }
+        catch( ... ) {
+            std::cerr << "Niespodziewany wyjatek";
+        }
+	} // while( menu )
+} //main

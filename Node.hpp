@@ -1,31 +1,31 @@
 extern const int ARRAY_MAX_SIZE;
 
-template < class T >
+template < typename T >
 class Node {
+
 	private:
 		T* elements;
 		Node* next;
 		int elementsInArray;
-	public:
-		Node< T >( Node< T >* n = nullptr ) {
-			next = n; 
-			elementsInArray = 0;
-			elements = new T[ ARRAY_MAX_SIZE ];
-		}
-		~Node< T >() {
-			delete elements;
 
-		}
+	public:
+		Node< T >( Node< T >* = nullptr );
+		~Node< T >() noexcept { delete[] elements; }
 		Node< T >& operator = ( const Node< T >& );
-		Node< T >* getNextNode();
-		T& getData( int = 0 );
+		Node< T >* getNextNode() const;
+		T& getData( const int = 0 ) const;
 		void setNextNode( Node< T >* = nullptr );
-		void setDataInArray( T&, int = 0 );
-		int getAmountOfElements();
+		void setDataInArray( const T&, const int = 0 );
+		int getAmountOfElements() const;
 		int deleteElement( T& );
 };
 
-template < class T >
+template < typename T >
+Node< T >::Node( Node< T >* n ) : next( n ), elementsInArray( 0 ) {
+	elements = new T[ ARRAY_MAX_SIZE ];
+}
+
+template < typename T >
 Node< T >& Node< T >::operator = ( const Node< T >& source ) {
 	elementsInArray = source.elementsInArray;
 	next = nullptr;
@@ -33,32 +33,33 @@ Node< T >& Node< T >::operator = ( const Node< T >& source ) {
 	return *this;
 }
 
-template < class T >
-Node< T >* Node< T >::getNextNode() {
+template < typename T >
+Node< T >* Node< T >::getNextNode() const {
 	return next;
 }
-template < class T >
-T& Node< T >::getData( int numberInArray ) {
-	return  elements[numberInArray] ;
+
+template < typename T >
+T& Node< T >::getData( const int numberInArray ) const {
+	return  elements[ numberInArray ] ;
 }
 
-template < class T >
+template < typename T >
 void Node< T >::setNextNode( Node< T >* n ) {
 	next = n;
 }
 
-template < class T >
-void Node< T >::setDataInArray( T& d, int place ) {
-	elements[place] = d;
+template < typename T >
+void Node< T >::setDataInArray( const T& d, const int place ) {
+	elements[ place ] = d;
 	++elementsInArray;
 }
 
-template < class T >
-int Node< T >::getAmountOfElements() {
+template < typename T >
+int Node< T >::getAmountOfElements() const {
 	return elementsInArray;
 }
 
-template < class T >
+template < typename T >
 int Node< T >::deleteElement( T& element ) {
 	element = 0;
 	--elementsInArray;
