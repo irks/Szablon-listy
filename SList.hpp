@@ -1,7 +1,10 @@
 #include <iostream>
 #include "Iterator.hpp"
 #include "MyExceptions.hpp"
+#include "Node.hpp"
+
 const int ARRAY_MAX_SIZE = 8;
+
 template < typename T >
 class SList {
 
@@ -14,7 +17,7 @@ class SList {
 		SList() : head_( nullptr ), tail_( nullptr ), NodesCount_( 0 ) {}
 		SList( const SList< T >& );
 		SList< T >& operator = ( SList< T >& );
-		~SList() noexcept { clear(); };
+		~SList() { clear(); };
 		Iterator< T > begin();
 		Iterator< T > end();
 		int size() const;
@@ -22,6 +25,7 @@ class SList {
 		bool empty() const;
 		void printList(); 
 		void push_back( const T& );
+		void push_front( const T& );
 		void pop_back();
 		void pop_front();
 		void erase( Iterator< T > );
@@ -113,6 +117,37 @@ void SList< T >::push_back( const T& d ) {
 		newTail_-> setDataInArray( d );
 		tail_ = newTail_;
 		++NodesCount_;
+	}
+}
+
+template < typename T >
+void SList< T >::push_front( const T& d ) {
+	if ( empty() ) {
+		Node< T >* newTail_ = new Node< T >();
+		newTail_-> setDataInArray( d );
+		head_ = newTail_;
+		tail_ = newTail_;
+		++NodesCount_;
+		return;
+	}
+	else {
+		Iterator< T > current = begin();
+		T dataCurrent = *current;
+		T dataPrevious = d;
+		// *current = d;
+
+		while( current.getNode() == head_ ) {
+			dataCurrent = *current;
+			*current = dataPrevious;
+			++current;
+
+			dataPrevious = dataCurrent;
+			
+			
+			
+
+		}
+		pushInFirstEmpty( dataPrevious );
 	}
 }
 

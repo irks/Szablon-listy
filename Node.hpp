@@ -1,3 +1,6 @@
+#ifndef NODE_HPP
+#define NODE_HPP
+
 extern const int ARRAY_MAX_SIZE;
 
 template < typename T >
@@ -10,7 +13,7 @@ class Node {
 
 	public:
 		Node< T >( Node< T >* = nullptr );
-		~Node< T >() noexcept { delete[] elements_; }
+		~Node< T >() { delete[] elements_; }
 		Node< T >& operator = ( const Node< T >& );
 		Node< T >* getNextNode() const;
 		T& getData( const int = 0 ) const;
@@ -65,3 +68,4 @@ int Node< T >::deleteElement( T& element ) {
 	--elementsInArray_;
 	return elementsInArray_;
 }
+#endif

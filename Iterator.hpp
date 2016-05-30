@@ -1,7 +1,7 @@
-#include <iostream>
+#ifndef ITERATOR_HPP
+#define ITERATOR_HPP
 
 #include "Node.hpp"
-#include "MyExceptions.hpp"
 
 extern const int ARRAY_MAX_SIZE ;
 
@@ -39,9 +39,9 @@ void Iterator< T >::operator = ( const Iterator< T >& source ) {
 
 template < typename T >
 bool Iterator< T >::operator != ( const Iterator& it2 ) const {
-	bool pointer_sEqual = pointer_ == it2.pointer_;
+	bool pointersEqual = pointer_ == it2.pointer_;
 	bool positionsEqual = positionInArray_ == it2.positionInArray_;
-	return ( ! ( pointer_sEqual && positionsEqual ) );
+	return ( ! ( pointersEqual && positionsEqual ) );
 }
 
 template < typename T >
@@ -81,3 +81,4 @@ template < typename T >
 Node< T >* Iterator< T >::getNode() const {
 	return pointer_;
 }
+#endif
