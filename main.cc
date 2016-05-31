@@ -1,16 +1,19 @@
-//zrobic zabezpieczenie przed podaniem string do int
-//end() na nullptr
+// Wrobel Ireneusz, Informatyka, grupa 2I5
+// Implementation of template class used to representing forward list
+// Memory is allocated in blocks
+
+// Interactive program to demonstrate features of SList
 
 #include <iostream>
 
 #include "SList.hpp"
 
 int main() {
+    const int LINES_NUMBER = 60;
 	bool menu = true;
 	int choice;
 	int element;
 	SList< int > list;
-    SList< int > list2;  
     Iterator< int > result;
 
 	while( menu ) {
@@ -29,10 +32,17 @@ int main() {
         std::cout << "9.  Wyjsc z programu" << std::endl;
         std::cout << "===================================================================" << std::endl;
 
-        std::cin >> choice;
-
         try {
-            
+
+            std::cin >> choice;
+
+            if( std::cin.fail() ) 
+                throw CinFail();
+
+            for( int i = 0; i < LINES_NUMBER; ++i )
+                std::cout << std::endl; //clearing the screen
+
+
             switch( choice ) {
             	case 1:
                     std::cout << "===================================================================" << std::endl;
@@ -44,10 +54,17 @@ int main() {
 
                     std::cin >> choice;
 
+                    if( std::cin.fail() ) 
+                        throw CinFail();
+
                     switch( choice ) {
                         case 1:
                             std::cout << "Podaj wartosc:" << std::endl;
                             std::cin >> element;
+
+                            if( std::cin.fail() ) 
+                                throw CinFail();
+
                             list.push_front( element );
                             break;
 
@@ -55,12 +72,20 @@ int main() {
 
                             std::cout << "Podaj wartosc:" << std::endl;
                             std::cin >> element;
+
+                            if( std::cin.fail() ) 
+                                throw CinFail();
+
                             list.push_back( element );
                             break;
 
                         case 3:
                             std::cout << "Podaj wartosc:" << std::endl;
                             std::cin >> element;
+
+                            if( std::cin.fail() ) 
+                                throw CinFail();
+
                             list.pushInFirstEmpty( element );
                             break;
 
@@ -80,6 +105,9 @@ int main() {
 
                     std::cin >> choice;
 
+                    if( std::cin.fail() ) 
+                        throw CinFail();
+
                     switch( choice ) {
                         case 1:
                             list.pop_front();
@@ -92,6 +120,10 @@ int main() {
                         case 3:
                             std::cout << "Podaj wartosc elementu: " << std::endl;
                             std::cin >> element;
+
+                            if( std::cin.fail() ) 
+                                throw CinFail();
+
                             result = list.search( element );
                             list.erase( result );
                             break;
@@ -119,8 +151,12 @@ int main() {
             	case 6:
                     std::cout << "Podaj wartosc szukanego elementu: " << std::endl;
                     std::cin >> element;
+
+                    if( std::cin.fail() ) 
+                        throw CinFail();
+
                     result = list.search( element );
-                    std::cout << (*result) << std::endl;
+                    std::cout << "Znaleziono element " << (*result) << std::endl;
             		break;
 
             	case 7:
@@ -132,6 +168,9 @@ int main() {
                     std::cout << "Czy na pewno chcesz wyczyscic baze?" << std::endl;
                     std::cout << "Jezeli tak, podaj '1', jezeli chcesz anulowac ta operacje podaj dowolny inny znak" << std::endl;
                     std::cin >> choice;
+
+                    if( std::cin.fail() ) 
+                        throw CinFail();
 
                     switch( choice ) {
                         case 1:
@@ -152,6 +191,12 @@ int main() {
             } //switch
         } //try
 
+        catch( CinFail &e ) {
+            std::cerr << e.what();
+        }
+        catch( std::bad_alloc &e ) {
+            std::cerr << e.what();
+        }
         catch( EmptyList &e ) {
             std::cerr << e.what();
         }

@@ -1,3 +1,9 @@
+// Wrobel Ireneusz, Informatyka, grupa 2I5
+// Implementation of template class used to representing forward list
+// Memory is allocated in blocks
+
+// Class Node has pointer to next Node, number of elements in array and array of elements
+
 #ifndef NODE_HPP
 #define NODE_HPP
 
@@ -7,13 +13,13 @@ template < typename T >
 class Node {
 
 	private:
-		T* elements_;
+		T* elements_; //pointer to the array of T values
 		Node* next_;
 		int elementsInArray_;
 
 	public:
 		Node< T >( Node< T >* = nullptr );
-		~Node< T >() { delete[] elements_; }
+		~Node< T >() { delete [] elements_; }
 		Node< T >& operator = ( const Node< T >& );
 		Node< T >* getNextNode() const;
 		T& getData( const int = 0 ) const;
